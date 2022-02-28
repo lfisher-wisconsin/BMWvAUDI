@@ -1,0 +1,52 @@
+---
+title: "BMW v Audi Data Cleaning"
+author: "Lindsey Fisher"
+date: "2/21/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+##load data and packages 
+library(readr)
+library(tidyverse)
+library(gsubfn)
+Reviews_Audi <- read_csv("Scrapped_Car_Reviews_Audi.csv")
+Reviews_BMW <- read_csv("Scrapped_Car_Reviews_BMW.csv")
+```
+
+
+```{r}
+Reviews_Audi$Review_Date = strapplyc(Reviews_Audi$Review_Date, "[0-9/]{8,}", simplify = TRUE)
+Reviews_BMW$Review_Date = strapplyc(Reviews_BMW$Review_Date, "[0-9/]{8,}", simplify = TRUE)
+
+Reviews_BMW$Review_Date=as.Date(Reviews_BMW$Review_Date,format = "%m/%d/%y")
+Reviews_Audi$Review_Date=as.Date(Reviews_Audi$Review_Date,format = "%m/%d/%y")
+
+Reviews_Audi=Reviews_Audi %>% 
+  mutate(model_year = as.numeric(str_sub(Vehicle_Title,1,4)),
+model= str_sub(Vehicle_Title,5,-1)) %>% 
+  select(-...1) %>% 
+  filter(model_year >= 2008) 
+
+Reviews_BMW=Reviews_BMW %>% 
+  mutate(model_year = as.numeric(str_sub(Vehicle_Title,1,4)),
+model= str_sub(Vehicle_Title,5,-1)) %>% 
+  select(-...1) %>% 
+  filter(model_year >= 2008)
+
+Reviews_BMW=Reviews_BMW %>% 
+  mutate(model_year = as.numeric(str_sub(Vehicle_Title,1,4)),
+model= str_sub(Vehicle_Title,5,-1)) %>% 
+  select(-...1) %>% 
+  filter(model_year >= 2008)
+
+```
+
+
+
+
+
